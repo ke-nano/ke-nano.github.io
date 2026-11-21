@@ -1,14 +1,285 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ke Nano Apps</title>
+  <meta name="description" content="趣味でスマホアプリを作っています。配信中のアプリの一覧です。">
+  <meta property="og:title" content="Ke Nano Apps">
+  <meta property="og:description" content="趣味でスマホアプリを作っています。配信中のアプリの一覧です。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ke-nano.github.io/">
+  <meta name="theme-color" content="#F6F2EA">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F6F2EA;
+      --surface: #FFFFFF;
+      --ink: #22262B;
+      --ink-soft: #5B6068;
+      --line: #E3DDD1;
+      --line-strong: #CFC7B8;
+      --focus: #2F6FD6;
+      --radius-card: 20px;
+      --radius-button: 12px;
+      --gap: 16px;
+      --font-display: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif;
+      --font-body: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", "Meiryo", sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #1A1C1F;
+        --surface: #24272B;
+        --ink: #EEEAE2;
+        --ink-soft: #A9ADB3;
+        --line: #34383D;
+        --line-strong: #4A4F56;
+        --focus: #8AB4FF;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+    a { color: inherit; }
+    a:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+      border-radius: 6px;
+    }
+
+    .page {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 56px 16px 40px;
+    }
+
+    /* 見出し */
+    .intro { margin-bottom: 36px; }
+    .intro__name {
+      margin: 0;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 34px;
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+    }
+    .intro__lead {
+      margin: 12px 0 0;
+      color: var(--ink-soft);
+    }
+
+    .section-label {
+      margin: 0 0 14px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      color: var(--ink-soft);
+    }
+
+    /* アプリのカード：アイコンの色を上の帯に使い、アプリごとの雰囲気を出す */
+    .apps {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: var(--gap);
+    }
+    .app {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+    }
+    .app__head {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 20px 18px;
+      background: var(--app-tint);
+      color: var(--app-on-tint);
+    }
+    .app__icon {
+      flex: none;
+      width: 72px;
+      height: 72px;
+      border-radius: 22.5%;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.12);
+      background: #fff;
+    }
+    .app__name {
+      margin: 0;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 22px;
+      line-height: 1.3;
+    }
+    .app__catch {
+      margin: 4px 0 0;
+      font-size: 14px;
+      line-height: 1.5;
+      opacity: 0.85;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+    .app__body { padding: 18px 20px 20px; }
+    .app__desc { margin: 0 0 18px; }
+
+    /* ストアへのボタン（公式バッジではなく、全アプリ共通の文字ボタン） */
+    .stores {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .store {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      padding: 8px 12px;
+      border-radius: var(--radius-button);
+      background: var(--ink);
+      color: var(--paper);
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.25;
+      text-align: center;
+      text-decoration: none;
+      transition: transform 0.12s ease, opacity 0.12s ease;
+    }
+    .store:hover { opacity: 0.88; }
+    .store:active { transform: scale(0.97); }
+    .store--soon {
+      background: transparent;
+      color: var(--ink-soft);
+      border: 1.5px dashed var(--line-strong);
+      font-weight: 500;
+      cursor: default;
+    }
+    .store__sub {
+      display: block;
+      margin-top: 2px;
+      font-size: 12px;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+
+    .app__links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 20px;
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+      font-size: 14px;
+    }
+    .app__links a {
+      display: inline-block;
+      padding: 6px 0;
+      color: var(--ink-soft);
+      text-underline-offset: 3px;
+    }
+
+    /* アプリごとの色（アイコンから取った色） */
+    .app--kondate {
+      --app-tint: #EEF4DC;
+      --app-on-tint: #2C3D1B;
+    }
+    .app--ankey {
+      --app-tint: #1F4568;
+      --app-on-tint: #F4EEDF;
+    }
+    @media (prefers-color-scheme: dark) {
+      .app--kondate {
+        --app-tint: #34442A;
+        --app-on-tint: #EDF3DD;
+      }
+    }
+
+    .footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .footer p { margin: 0 0 8px; }
+    .footer a { text-underline-offset: 3px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .store { transition: none; }
+      .store:active { transform: none; }
+    }
+  </style>
 </head>
 <body>
-  <h1>Ke Nano Apps</h1>
-  <p>公開中のアプリ</p>
-  <ul>
-    <li><a href="moriagaru-roulette/privacy.html">もりあがるーれっと！ プライバシーポリシー</a></li>
-  </ul>
+  <main class="page">
+    <header class="intro">
+      <h1 class="intro__name">Ke Nano Apps</h1>
+      <p class="intro__lead">趣味でスマホアプリを作っています。</p>
+    </header>
+
+    <h2 class="section-label">配信中のアプリ</h2>
+    <ul class="apps">
+      <li class="app app--kondate">
+        <div class="app__head">
+          <img class="app__icon" src="icons/makasete-kondate.png" alt="" width="72" height="72">
+          <div>
+            <h3 class="app__name">まかせて献立</h3>
+            <p class="app__catch">うちのメニューから、<wbr>今日の献立。</p>
+          </div>
+        </div>
+        <div class="app__body">
+          <p class="app__desc">いつも作る料理を登録しておくと、今日の献立を決めてくれます。1週間分の献立と、買い物リストもまとめて作れます。</p>
+          <div class="stores">
+            <a class="store" href="https://apps.apple.com/jp/app/id6789883855" aria-label="まかせて献立を App Store で見る">App Store<span class="store__sub">で見る</span></a>
+            <a class="store" href="https://play.google.com/store/apps/details?id=com.nano.omakasechef.app" aria-label="まかせて献立を Google Play で見る">Google Play<span class="store__sub">で見る</span></a>
+          </div>
+          <ul class="app__links">
+            <li><a href="omakase-chef/privacy.html">プライバシーポリシー</a></li>
+          </ul>
+        </div>
+      </li>
+
+      <li class="app app--ankey">
+        <div class="app__head">
+          <img class="app__icon" src="icons/ankey.png" alt="" width="72" height="72">
+          <div>
+            <h3 class="app__name">あんキー</h3>
+            <p class="app__catch">ネットにつながない<wbr>パスワード手帳</p>
+          </div>
+        </div>
+        <div class="app__body">
+          <p class="app__desc">インターネットに接続しない、パスワード手帳です。広告・アプリ内課金・件数の上限はありません。紙の手帳のように、大きめの文字で迷わず使えます。</p>
+          <div class="stores">
+            <a class="store" href="https://apps.apple.com/jp/app/id6832541130" aria-label="あんキーを App Store で見る">App Store<span class="store__sub">で見る</span></a>
+            <span class="store store--soon" aria-label="あんキーの Google Play 版は準備中です">Google Play<span class="store__sub">準備中</span></span>
+          </div>
+          <ul class="app__links">
+            <li><a href="ankey/privacy-policy.html">プライバシーポリシー</a></li>
+            <li><a href="ankey/support.html">サポート</a></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+
+    <footer class="footer">
+      <p>そのほかのページ：<a href="moriagaru-roulette/privacy.html">もりあがるーれっと！ プライバシーポリシー</a></p>
+      <p>App Store は Apple Inc. のサービスマークです。Google Play は Google LLC の商標です。</p>
+      <p>&copy; Ke Nano</p>
+    </footer>
+  </main>
 </body>
 </html>
